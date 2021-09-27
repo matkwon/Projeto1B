@@ -7,7 +7,7 @@
         <img src="{% static 'notes/img/logo-getit.png' %}" class="logo" />
         <span class="subtitle">Como o Post-it, mas com outro verbo</span>
     </div>
-    <h1>TAG - filtrado</h1>
+    <h1>TAG: {% for tag in tags %}{{ tag.nome }}{% endfor %}</h1>
     <div>
         <a class="appbar-right" href="tags">TAGS</a>
         <a class="appbar-right" href="..">NOTAS</a>
@@ -15,49 +15,17 @@
 </div>
 
 <main class="container">
-    <form class="form-card" method="post" action="/filter_post">
-        {% csrf_token %}
-        <input type="hidden" name="type" value="post" />
-        <div class="form-card-header">
-            <input
-                class="form-card-title"
-                type="text"
-                name="titulo"
-                placeholder="Título"
-            />
-        </div>
-        {% for tag in tags %}
-            <input type="hidden" name="tag-id" value="{{ tag.id }}"/>
-        {% endfor %}
-        <textarea
-            class="autoresize"
-            name="detalhes"
-            placeholder="Digite o conteúdo..."
-        ></textarea>
-        <button class="btn" type="submit">Criar</button>
-    </form>
 
     <ul class="card-container">
         {% for note in notes %}
         <li>
-            <form id="{{ note.id }}" method="post" action="/filter_delete">
-                {% csrf_token %}
-                <input type="hidden" name="id" value="{{ note.id }}" />
-                {% for tag in tags %}
-                    <input type="hidden" name="tag-id" value="{{ tag.id }}"/>
-                {% endfor %}
-            </form>
-            <form class="card" method="post" id="card" action="/filter_update">
-                {% csrf_token %}
-                <input type="hidden" name="id" value="{{ note.id }}" />
+            <div class="card">
                 <div class="card-header">
-                    <input class="card-title" name="new-title" value="{{ note.title }}"/>
-                    <input class="card-tag" name="new-tag" value="{{ note.tag }}"/>
-                    <button class="close" type="submit" form="{{ note.id }}">X</button>
+                    <h2 class="card-title">{{ note.title }}</h2>
+                    <p class="card-tag">{{ note.tag }}</p>
                 </div>
-                <textarea class="autoresize card-content" name="new-content">{{ note.content }}</textarea>
-                <button class="update" type="submit">edit</button>
-            </form>
+                <p class="autoresize card-content">{{ note.content }}</p>
+            </div>
         </li>
         {% endfor %}
     </ul>
