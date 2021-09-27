@@ -54,47 +54,47 @@ def tags(request):
         all_tags = Tag.objects.all()
         return render(request, 'notes/tags.html', {'tags': all_tags})
 
-def filter(request):
-    if request.method == 'POST':
-        title = request.POST.get('titulo')
-        content = request.POST.get('detalhes')
-        global tag
-        tag = Tag.objects.filter(id=request.POST.get('tag-id'))[0]
-        Note(title=title, content=content, tag=tag).save()
-        return redirect('filter')
-    else:
-        notes = Note.objects.filter(tag=tag)
-        return render(request, 'notes/filter.html', {'notes': notes})
+# def filter(request):
+#     if request.method == 'POST':
+#         title = request.POST.get('titulo')
+#         content = request.POST.get('detalhes')
+#         global tag
+#         tag = Tag.objects.filter(id=request.POST.get('tag-id'))[0]
+#         Note(title=title, content=content, tag=tag).save()
+#         return redirect('filter')
+#     else:
+#         notes = Note.objects.filter(tag=tag)
+#         return render(request, 'notes/filter.html', {'notes': notes})
 
-def filter_delete(request):
-    if request.method == 'POST':
-        Note.objects.filter(id=request.POST.get('id')).delete()
-        global tag
-        tag = Tag.objects.filter(id=request.POST.get('tag-id'))[0]
-        if tag.nome != None and len(Note.objects.filter(tag=tag)) == 0:
-            tag.delete()
-            return redirect('index')
-        return redirect('filter')
-    else:
-        notes = Note.objects.filter(tag=tag)
-        return render(request, 'notes/filter.html', {'notes': notes})
+# def filter_delete(request):
+#     if request.method == 'POST':
+#         Note.objects.filter(id=request.POST.get('id')).delete()
+#         global tag
+#         tag = Tag.objects.filter(id=request.POST.get('tag-id'))[0]
+#         if tag.nome != None and len(Note.objects.filter(tag=tag)) == 0:
+#             tag.delete()
+#             return redirect('index')
+#         return redirect('filter')
+#     else:
+#         notes = Note.objects.filter(tag=tag)
+#         return render(request, 'notes/filter.html', {'notes': notes})
 
-def filter_update(request):
-    if request.method == 'POST':
-        note = Note.objects.get(id=request.POST.get('id'))
-        note.title = request.POST.get('new-title')
-        note.content = request.POST.get('new-content')
-        if request.POST.get('new-tag') != note.tag.nome:
-            if len(Tag.objects.filter(nome=request.POST.get('new-tag'))) == 0:
-                Tag(nome=request.POST.get('new-tag')).save()
-            note.tag = Tag.objects.filter(nome=request.POST.get('new-tag'))[0]
-        note.save()
-        global tag
-        tag = Tag.objects.filter(id=request.POST.get('tag-id'))[0]
-        if tag.nome != None and len(Note.objects.filter(tag=tag)) == 0:
-            tag.delete()
-            return redirect('index')
-        return redirect('filter')
-    else:
-        notes = Note.objects.filter(tag=tag)
-        return render(request, 'notes/filter.html', {'notes': notes})
+# def filter_update(request):
+#     if request.method == 'POST':
+#         note = Note.objects.get(id=request.POST.get('id'))
+#         note.title = request.POST.get('new-title')
+#         note.content = request.POST.get('new-content')
+#         if request.POST.get('new-tag') != note.tag.nome:
+#             if len(Tag.objects.filter(nome=request.POST.get('new-tag'))) == 0:
+#                 Tag(nome=request.POST.get('new-tag')).save()
+#             note.tag = Tag.objects.filter(nome=request.POST.get('new-tag'))[0]
+#         note.save()
+#         global tag
+#         tag = Tag.objects.filter(id=request.POST.get('tag-id'))[0]
+#         if tag.nome != None and len(Note.objects.filter(tag=tag)) == 0:
+#             tag.delete()
+#             return redirect('index')
+#         return redirect('filter')
+#     else:
+#         notes = Note.objects.filter(tag=tag)
+#         return render(request, 'notes/filter.html', {'notes': notes})
