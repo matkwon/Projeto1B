@@ -15,7 +15,7 @@
     <ul class="card-container">
         {% for tag in tags %}
         <li>
-            <form class="card" method="post" id="card" action="tags">
+            <form class="card" method="post" id="card" action="filter">
                 {% csrf_token %}
                 <input type="hidden" name="id" value="{{ tag.id }}"/>
                 <button class="tag-link">{{ tag.nome }}</button>
