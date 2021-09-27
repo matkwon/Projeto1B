@@ -15,38 +15,10 @@
 </div>
 
 <main class="container">
-    <!-- <form class="form-card" method="post" action="/filter_post">
-        {% csrf_token %}
-        <input type="hidden" name="type" value="post" />
-        <div class="form-card-header">
-            <input
-                class="form-card-title"
-                type="text"
-                name="titulo"
-                placeholder="Título"
-            />
-        </div>
-        {% for tag in tags %}
-            <input type="hidden" name="tag-id" value="{{ tag.id }}"/>
-        {% endfor %}
-        <textarea
-            class="autoresize"
-            name="detalhes"
-            placeholder="Digite o conteúdo..."
-        ></textarea>
-        <button class="btn" type="submit">Criar</button>
-    </form> -->
 
     <ul class="card-container">
         {% for note in notes %}
         <li>
-            <!-- <form id="{{ note.id }}" method="post" action="/filter_delete">
-                {% csrf_token %}
-                <input type="hidden" name="id" value="{{ note.id }}" />
-                {% for tag in tags %}
-                    <input type="hidden" name="tag-id" value="{{ tag.id }}"/>
-                {% endfor %}
-            </form> -->
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">{{ note.title }}</h2>
