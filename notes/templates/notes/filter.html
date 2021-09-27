@@ -26,6 +26,9 @@
                 placeholder="Título"
             />
         </div>
+        {% for tag in tags %}
+            <input type="hidden" name="tag-id" value="{{ tag.id }}"/>
+        {% endfor %}
         <textarea
             class="autoresize"
             name="detalhes"
@@ -40,7 +43,9 @@
             <form id="{{ note.id }}" method="post" action="/filter_delete">
                 {% csrf_token %}
                 <input type="hidden" name="id" value="{{ note.id }}" />
-                <input type="hidden" name="tag" value="{{ note.tag }}"/>
+                {% for tag in tags %}
+                    <input type="hidden" name="tag-id" value="{{ tag.id }}"/>
+                {% endfor %}
             </form>
             <form class="card" method="post" id="card" action="/filter_update">
                 {% csrf_token %}

@@ -47,10 +47,9 @@ def update(request):
 
 def tags(request):
     if request.method == 'POST':
-        global tag
-        tag = Tag(id=request.POST.get('id'))
-        notes = Note.objects.filter(tag=tag)
-        return render(request, 'notes/filter.html', {'notes': notes})
+        all_tags = Tag.objects.filter(id=request.POST.get('id'))
+        notes = Note.objects.filter(tag=all_tags[0])
+        return render(request, 'notes/filter.html', {'notes': notes, 'tags': all_tags})
     else:
         all_tags = Tag.objects.all()
         return render(request, 'notes/tags.html', {'tags': all_tags})
@@ -59,6 +58,8 @@ def filter(request):
     if request.method == 'POST':
         title = request.POST.get('titulo')
         content = request.POST.get('detalhes')
+        global tag
+        tag = Tag.objects.filter(id=request.POST.get('tag-id'))[0]
         Note(title=title, content=content, tag=tag).save()
         return redirect('filter')
     else:
@@ -68,7 +69,9 @@ def filter(request):
 def filter_delete(request):
     if request.method == 'POST':
         Note.objects.filter(id=request.POST.get('id')).delete()
-        if request.POST.get('tag') != None and len(Note.objects.filter(tag=Tag.objects.filter(nome=request.POST.get('tag'))[0])) == 0:
+        global tag
+        tag = Tag.objects.filter(id=request.POST.get('tag-id'))[0]
+        if tag.nome != None and len(Note.objects.filter(tag=tag)) == 0:
             tag.delete()
             return redirect('index')
         return redirect('filter')
@@ -86,7 +89,9 @@ def filter_update(request):
                 Tag(nome=request.POST.get('new-tag')).save()
             note.tag = Tag.objects.filter(nome=request.POST.get('new-tag'))[0]
         note.save()
-        if len(Note.objects.filter(tag=tag)) == 0:
+        global tag
+        tag = Tag.objects.filter(id=request.POST.get('tag-id'))[0]
+        if tag.nome != None and len(Note.objects.filter(tag=tag)) == 0:
             tag.delete()
             return redirect('index')
         return redirect('filter')
