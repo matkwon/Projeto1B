@@ -1,0 +1,27 @@
+{% extends "notes/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="appbar">
+    <div class="appbar-left">
+        <img src="{% static 'notes/img/logo-getit.png' %}" class="logo" />
+        <span class="subtitle">Como o Post-it, mas com outro verbo</span>
+    </div>
+    <h1>TAGS</h1>
+    <a class="appbar-right" href="..">NOTAS</a>
+</div>
+
+<main class="container">
+    <ul class="card-container">
+        {% for tag in tags %}
+        <li>
+            <form class="card" method="post" id="card" action="tags">
+                {% csrf_token %}
+                <input type="hidden" name="id" value="{{ tag.id }}"/>
+                <button class="tag-link">{{ tag.nome }}</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+</main>
+{% endblock %}
